@@ -3,6 +3,12 @@ provider "google" {
   region  = var.region
 }
 
+locals {
+  subnet_01_name = "${var.vpc_name}-subnet-01"
+  subnet_02_name = "${var.vpc_name}-subnet-02"
+  subnet_03_name = "${var.vpc_name}-subnet-03"
+}
+
 module "vpc-vincent" {
   source  = "terraform-google-modules/network/google"
   version = "~> 9.1"
@@ -13,12 +19,12 @@ module "vpc-vincent" {
 
   subnets = [
     {
-      subnet_name           = "subnet-01"
+      subnet_name           = local.subnet_01_name
       subnet_ip             = "10.10.10.0/24"
       subnet_region         = var.region
     },
     {
-      subnet_name           = "subnet-02"
+      subnet_name           = local.subnet_02_name
       subnet_ip             = "10.10.20.0/24"
       subnet_region         = var.region
       subnet_private_access = true
@@ -26,7 +32,7 @@ module "vpc-vincent" {
       description           = "This subnet has a description"
     },
     {
-      subnet_name               = "subnet-03"
+      subnet_name               = local.subnet_03_name
       subnet_ip                 = "10.10.30.0/24"
       subnet_region             = var.region
       subnet_flow_logs          = true
@@ -37,14 +43,14 @@ module "vpc-vincent" {
   ]
 
   secondary_ranges = {
-    subnet-01 = [
+    local.subnet_01_name = [
       {
         range_name    = "subnet-01-secondary-01"
         ip_cidr_range = "192.168.64.0/24"
       },
     ]
 
-    subnet-02 = []
+    local.subnet_02_name = []
   }
 
   routes = [
