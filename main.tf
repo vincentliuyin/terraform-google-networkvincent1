@@ -43,14 +43,14 @@ module "vpc-vincent" {
   ]
 
   secondary_ranges = {
-    local.subnet_01_name = [
+    (local.subnet_01_name) = [
       {
         range_name    = "subnet-01-secondary-01"
         ip_cidr_range = "192.168.64.0/24"
       },
     ]
 
-    local.subnet_02_name = []
+    (local.subnet_02_name) = []
   }
 
   routes = [
