@@ -1,7 +1,3 @@
-provider "google" {
-  project = var.project
-  region  = var.region
-}
 
 resource "random_integer" "subnet_suffix" {
   min = 1
